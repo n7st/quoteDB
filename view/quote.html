@@ -1,0 +1,25 @@
+{{define "quote"}}
+    {{template "header"}}
+
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th colspan="2">{{.Channel}} at {{.Date}}</th>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range $key, $value := .Lines}}
+                <tr>
+                    <td>{{$value.Author}}</td>
+                    <td>{{$value.Content}}</td>
+                </tr>
+            {{end}}
+        </tbody>
+    </table>
+
+    {{template "footer"}}
+{{end}}

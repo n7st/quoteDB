@@ -1,0 +1,28 @@
+{{define "channel_index"}}
+    {{template "header"}}
+
+    <h1>{{.Channel}}</h1>
+
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range $key, $value := .Instances}}
+            <tr>
+                <td>
+                    <a href="/view/{{$value.ID}}">{{$value.ID}}</a>
+                </td>
+                <td>{{$value.CreatedAt}}</td>
+                <td>Test</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+
+    {{template "footer"}}
+{{end}}
