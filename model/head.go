@@ -6,4 +6,6 @@ type Head struct {
 	gorm.Model
 
 	Channel string
+	Title   string
+	Lines   []Line
 }
