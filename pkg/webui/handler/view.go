@@ -2,20 +2,21 @@ package handler
 
 import (
 	"fmt"
-	"net/http"
 	"html/template"
+	"log"
+	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 
 	"github.com/n7st/quoteDB/model"
-	"log"
-	"time"
 )
 
 type Content struct {
 	Error   string
 	Title   string
 	Channel string
+	ID      uint
 	Date    time.Time
 	Lines   []model.Line
 }
@@ -37,6 +38,7 @@ func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
 		content.Lines = lines
 		content.Channel = lines[0].Head.Channel
 		content.Date = lines[0].Head.CreatedAt.UTC()
+		content.ID = lines[0].Head.ID
 	}
 
 	err := templates.ExecuteTemplate(w, "quote", content)

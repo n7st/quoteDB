@@ -1,6 +1,11 @@
 {{define "quote"}}
     {{template "header"}}
 
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/channel/{{.Channel | urlquery}}">{{.Channel}}</a></li>
+        <li class="breadcrumb-item active">{{.ID}}</li>
+    </ol><!--/ .breadcrumb -->
+
     <table class="table table-sm">
         <thead>
             <tr>
@@ -19,7 +24,7 @@
                 </tr>
             {{end}}
         </tbody>
-    </table>
+    </table><!--/ .table .table-sm -->
 
     {{template "footer"}}
 {{end}}
