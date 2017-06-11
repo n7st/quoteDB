@@ -1,9 +1,9 @@
-{{define "channel_index"}}
+{{define "channelindex"}}
     {{template "header"}}
 
     <h1>{{.Channel}}</h1>
 
-    <table class="table table-sm">
+    <table class="table table-sm" id="quotes">
         <thead>
             <tr>
                 <th>ID</th>
@@ -22,7 +22,7 @@
             </tr>
             {{end}}
         </tbody>
-    </table>
+    </table><!--/ #quotes.table table-sm -->
 
     {{template "footer"}}
 {{end}}

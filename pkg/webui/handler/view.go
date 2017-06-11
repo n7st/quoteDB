@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"time"
@@ -20,8 +19,6 @@ type Content struct {
 	Date    time.Time
 	Lines   []model.Line
 }
-
-var templates = template.Must(template.ParseGlob("view/*"))
 
 func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)

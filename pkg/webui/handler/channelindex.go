@@ -1,12 +1,12 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 
-	"fmt"
 	"github.com/n7st/quoteDB/model"
 )
 
@@ -28,7 +28,9 @@ func (h *Handler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	)
 
 	vars := mux.Vars(r)
-	content := &IndexContent{Channel: vars["name"]}
+	content := &IndexContent{
+		Channel: vars["name"],
+	}
 
 	h.DB.Find(&head, model.Head{Channel: vars["name"]})
 
@@ -50,7 +52,7 @@ func (h *Handler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 		content.Instances = out
 	}
 
-	err := templates.ExecuteTemplate(w, "channel_index", content)
+	err := templates.ExecuteTemplate(w, "channelindex", content)
 
 	if err != nil {
 		log.Println(err)

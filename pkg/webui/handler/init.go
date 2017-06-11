@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"html/template"
+
 	"github.com/jinzhu/gorm"
 	"github.com/gorilla/mux"
 )
@@ -8,6 +10,8 @@ import (
 type Handler struct {
 	DB *gorm.DB
 }
+
+var templates = template.Must(template.ParseGlob("view/*"))
 
 func NewHandler(db *gorm.DB) *Handler {
 	return &Handler{DB: db}
