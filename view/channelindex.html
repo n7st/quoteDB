@@ -3,12 +3,12 @@
 
     <h1>{{.Channel}}</h1>
 
-    <table class="table table-sm" id="quotes">
+    <table class="table table-sm dataTable" id="quotes">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Title</th>
+                <th style="width: 5%">ID</th>
+                <th style="width: 40%">Date</th>
+                <th style="width: 55%">Title</th>
             </tr>
         </thead>
         <tbody>
@@ -18,7 +18,9 @@
                     <a href="/view/{{$value.ID}}">{{$value.ID}}</a>
                 </td>
                 <td>{{$value.CreatedAt}}</td>
-                <td>{{$value.Title}}</td>
+                <td>
+                    <a href="/view/{{$value.ID}}">{{$value.Title}}</a>
+                </td>
             </tr>
             {{end}}
         </tbody>
