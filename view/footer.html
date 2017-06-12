@@ -29,12 +29,13 @@
 
             <script>
                 $(document).ready(function() {
-                    $('#quotes').DataTable({
+                    $('.dataTable').DataTable({
                         bPaginate:     true,
                         bLengthChange: false,
                         bFilter:       true,
-                        bInfo:         false,
+                        bInfo:         true,
                         bAutoWidth:    true,
+                        dom: '<"top"fp>rt<"bottom"i><"clear">',
                     });
                 });
             </script>
