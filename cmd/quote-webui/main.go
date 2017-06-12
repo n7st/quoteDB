@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/n7st/quoteDB/util"
 	"github.com/n7st/quoteDB/pkg/quote-webui/handler"
+	"github.com/n7st/quoteDB/util"
 
 	"github.com/gorilla/handlers"
 )
@@ -23,7 +23,7 @@ func main() {
 
 	srv := &http.Server{
 		Handler: handlers.CORS()(router),
-		Addr:    ":"+config.WebUIPort,
+		Addr:    ":" + config.WebUIPort,
 	}
 
 	log.Fatal(srv.ListenAndServe())

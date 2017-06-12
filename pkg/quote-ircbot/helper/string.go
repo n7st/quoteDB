@@ -14,7 +14,7 @@ func OptionsFromString(input string) (output []string) {
 
 	for i, v := range matches {
 		// Skip non-options (i.e. strings between options)
-		if i % 2 == 0 {
+		if i%2 == 0 {
 			continue
 		}
 

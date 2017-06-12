@@ -6,8 +6,8 @@ import (
 
 	"github.com/n7st/quoteDB/util"
 
-	"github.com/jinzhu/gorm"
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 )
 
 // Handler{} provides the base for a HTTP controller.

@@ -7,7 +7,6 @@ import (
 	"github.com/thoj/go-ircevent"
 )
 
-
 type EventFnProvider struct {
 	qb *quote_ircbot.QuoteBot
 }

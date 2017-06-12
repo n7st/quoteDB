@@ -11,5 +11,5 @@ type Head struct {
 	Channel string
 	Title   string
 
-	Lines   []Line
+	Lines []Line
 }
