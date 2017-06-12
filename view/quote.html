@@ -1,30 +1,37 @@
 {{define "quote"}}
     {{template "header"}}
 
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/channel/{{.Channel | urlquery}}">{{.Channel}}</a></li>
-        <li class="breadcrumb-item active">{{.ID}}</li>
-    </ol><!--/ .breadcrumb -->
+    {{if .Error}}
+        <div class="alert alert-danger" style="padding-top: 0">
+            <h2>An error occurred!</h2>
+            <p>{{.Error}}</p>
+        </div>
+    {{else}}
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/channel/{{.Channel | urlquery}}">{{.Channel}}</a></li>
+            <li class="breadcrumb-item active">{{.ID}}</li>
+        </ol><!--/ .breadcrumb -->
 
-    <table class="table table-sm">
-        <thead>
-            <tr>
-                <th colspan="2">{{.Channel}} at {{.Date}}</th>
-            </tr>
-            <tr>
-                <th style="width: 25%">Author</th>
-                <th style="width: 75%">Message</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{range $key, $value := .Lines}}
+        <table class="table table-sm">
+            <thead>
                 <tr>
-                    <td>{{$value.Author}}</td>
-                    <td>{{$value.Content}}</td>
+                    <th colspan="2">{{.Channel}} at {{.Date}}</th>
                 </tr>
-            {{end}}
-        </tbody>
-    </table><!--/ .table .table-sm -->
+                <tr>
+                    <th style="width: 25%">Author</th>
+                    <th style="width: 75%">Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range $key, $value := .Lines}}
+                    <tr>
+                        <td>{{$value.Author}}</td>
+                        <td>{{$value.Content}}</td>
+                    </tr>
+                {{end}}
+            </tbody>
+        </table><!--/ .table .table-sm -->
+    {{end}}
 
     {{template "footer"}}
 {{end}}

@@ -11,8 +11,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// IndexContent{} contains template variables.
-type IndexContent struct {
+// ChannelIndexContent{} contains template variables.
+type ChannelIndexContent struct {
 	Instances []model.Head
 	Channel   string
 	Error     string
@@ -34,7 +34,7 @@ func (h *Handler) ChannelIndexHandler(w http.ResponseWriter, r *http.Request) {
 	)
 
 	vars := mux.Vars(r)
-	content := &IndexContent{
+	content := &ChannelIndexContent{
 		Channel: vars["name"],
 		Trigger: h.Config.Trigger,
 	}
@@ -63,5 +63,7 @@ func (h *Handler) ChannelIndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Println(err)
+
+		fmt.Fprintf(w, "An internal server error occurred: %s", err)
 	}
 }

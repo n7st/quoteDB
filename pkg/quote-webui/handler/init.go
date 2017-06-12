@@ -28,6 +28,7 @@ func NewHandler(db *gorm.DB, c *util.Config) *Handler {
 func (h *Handler) Router() *mux.Router {
 	r := mux.NewRouter()
 
+	r.HandleFunc("/", h.IndexHandler)
 	r.HandleFunc("/view/{id}", h.ViewHandler)
 	r.HandleFunc("/channel/{name}", h.ChannelIndexHandler)
 

@@ -44,6 +44,8 @@ func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
 	err := templates.ExecuteTemplate(w, "quote", content)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+
+		fmt.Fprintf(w, "An internal server error occurred: %s", err)
 	}
 }
