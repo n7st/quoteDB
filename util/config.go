@@ -23,6 +23,8 @@ type Config struct {
 	Password     string   `yaml:"nickserv_password"`
 	Server       string   `yaml:"server"`
 	Trigger      string   `yaml:"command_trigger"`
+	BaseURL      string   `yaml:"base_url"`
+	WebUIPort    string   `yaml:"webui_port"`
 }
 
 func NewConfig(params ...string) *Config {

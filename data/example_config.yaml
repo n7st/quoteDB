@@ -1,0 +1,20 @@
+ident: Quote
+nickname: Quote
+server: irc.network.org
+port: 6697
+channels:
+  - "##quotebot"
+use_tls: true
+debug: true
+verbose: false
+nickserv_password: somepass
+modes: "+B"
+db_path: data/quotes.db
+
+command_trigger: "!"
+
+# URL for the web UI, trailing slash required.
+base_url: http://127.0.0.1:8080/
+
+# Port for the web UI's integrated webserver
+webui_port: 8080

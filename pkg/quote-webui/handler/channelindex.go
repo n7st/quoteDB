@@ -14,6 +14,7 @@ type IndexContent struct {
 	Instances []model.Head
 	Channel   string
 	Error     string
+	Trigger   string
 }
 
 type headWithLines struct {
@@ -30,6 +31,7 @@ func (h *Handler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	content := &IndexContent{
 		Channel: vars["name"],
+		Trigger: h.Config.Trigger,
 	}
 
 	h.DB.Find(&head, model.Head{Channel: vars["name"]})

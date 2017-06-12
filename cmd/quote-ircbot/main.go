@@ -13,6 +13,8 @@ func main() {
 
 	quoteBot := quote_ircbot.NewQuoteBot(bot, db, config)
 
+	defer db.Close()
+
 	event.Initialise(quoteBot)
 
 	quoteBot.IRC.Loop()

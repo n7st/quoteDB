@@ -7,6 +7,8 @@ import (
 
 	"github.com/thoj/go-ircevent"
 	"github.com/n7st/quoteDB/model"
+	"fmt"
+	"net/url"
 )
 
 func (q *EventFnProvider) callbackPrivmsg(e *irc.Event) {
@@ -42,7 +44,22 @@ func (q *EventFnProvider) handleCommand(e *irc.Event) {
 		if argsWithoutCmd != "" {
 			q.parseAddQuote(e, argsWithoutCmd)
 		}
+	} else if command == "quotehelp" {
+		q.parseQuoteHelp(e)
+	} else if command == "quotepage" {
+		q.parseQuotePage(e)
 	}
+}
+
+func (q EventFnProvider) parseQuoteHelp(e *irc.Event) {
+	q.qb.IRC.Privmsg(e.Arguments[0], "Commands: !addquote, !quotepage")
+}
+
+func (q EventFnProvider) parseQuotePage(e *irc.Event) {
+	channel := url.PathEscape(e.Arguments[0])
+	loc := fmt.Sprintf("%schannel/%s", q.qb.Config.BaseURL, channel)
+
+	q.qb.IRC.Privmsgf(e.Arguments[0], "Quotes for this channel can be found at %s", loc)
 }
 
 // parseAddQuote() handles the "addquote" command and needs refactoring.
@@ -107,6 +124,7 @@ func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 			q.qb.DB.Create(&line)
 		}
 
-		q.qb.IRC.Privmsgf(channel, "Added quote contains %d lines (%s/%d)", len(lines), channel, head.ID)
+		q.qb.IRC.Privmsgf(channel, "Quote added - %sview/%d",
+			q.qb.Config.BaseURL, head.ID)
 	}
 }
