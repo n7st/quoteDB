@@ -52,7 +52,8 @@ func (q *EventFnProvider) handleCommand(e *irc.Event) {
 }
 
 func (q EventFnProvider) parseQuoteHelp(e *irc.Event) {
-	q.qb.IRC.Privmsg(e.Arguments[0], "Commands: !addquote, !quotepage")
+	q.qb.IRC.Privmsgf(e.Arguments[0], "Commands: %saddquote, %squotepage",
+		q.qb.Config.Trigger, q.qb.Config.Trigger)
 }
 
 func (q EventFnProvider) parseQuotePage(e *irc.Event) {
