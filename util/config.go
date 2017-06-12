@@ -1,3 +1,5 @@
+// The util package provides functionality needed by all binaries in the
+// project.
 package util
 
 import (
@@ -7,8 +9,11 @@ import (
 	"github.com/go-yaml/yaml"
 )
 
+// DEFAULT_CONFIG_FILE_LOCATION can be overridden by passing a command-line
+// argument to the program.
 const DEFAULT_CONFIG_FILE_LOCATION = "./data/config.yaml"
 
+// Config{} contains configuration values for the bot and web server.
 type Config struct {
 	Channels     []string `yaml:"channels"`
 	Debug        bool     `yaml:"debug"`
@@ -27,6 +32,7 @@ type Config struct {
 	WebUIPort    string   `yaml:"webui_port"`
 }
 
+// NewConfig() creates a new Config{} from a YAML file and sets some defaults.
 func NewConfig(params ...string) *Config {
 	var configFileLocation string
 	var config = &Config{}

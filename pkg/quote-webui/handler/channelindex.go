@@ -1,3 +1,4 @@
+// The handler package contains controllers for displaying web pages.
 package handler
 
 import (
@@ -5,11 +6,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
-
 	"github.com/n7st/quoteDB/model"
+
+	"github.com/gorilla/mux"
 )
 
+// IndexContent{} contains template variables.
 type IndexContent struct {
 	Instances []model.Head
 	Channel   string
@@ -17,12 +19,15 @@ type IndexContent struct {
 	Trigger   string
 }
 
+// headWithLines{} stores a full quote.
 type headWithLines struct {
 	Head  model.Head
 	Lines []model.Line
 }
 
-func (h *Handler) IndexHandler(w http.ResponseWriter, r *http.Request) {
+// ChannelIndexHandler() displays a page with a list of quotes for the given
+// {channel}.
+func (h *Handler) ChannelIndexHandler(w http.ResponseWriter, r *http.Request) {
 	var (
 		head []model.Head
 		out  []model.Head

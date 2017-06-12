@@ -7,8 +7,15 @@ database regularly.
 ## Installation
 
 * Install the software `go get github.com/n7st/quoteDB/...`
+* `cd` to the directory where it's installed (probably `~/go/src/github.com/n7st/quoteDB`
+* Copy `data/config_example.yaml` to `data/config.yaml` and edit it
 * Run `quote-ircbot` for the IRC end
 * Run `quote-webui` for the web end
+
+You can pass one command-line argument, the path to a YAML configuration file,
+to quote-ircbot or quote-webui:
+
+`quote-ircbot ~/config.yaml`
 
 ## Usage
 

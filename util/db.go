@@ -1,12 +1,15 @@
+// The util package provides functionality needed by all binaries in the
+// project.
 package util
 
 import (
 	"log"
 
+	"github.com/n7st/quoteDB/model"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 
-	"github.com/n7st/quoteDB/model"
 )
 
 // InitDB() creates a database connection.

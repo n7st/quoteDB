@@ -1,39 +1,49 @@
+// Package event contains functions relating to IRC numeric events.
 package event
 
 import (
-	"regexp"
+	"fmt"
+	"log"
+	"net/url"
 	"strings"
 	"time"
 
-	"github.com/thoj/go-ircevent"
 	"github.com/n7st/quoteDB/model"
-	"fmt"
-	"net/url"
+	"github.com/n7st/quoteDB/pkg/quote-ircbot/helper"
+
+	"github.com/thoj/go-ircevent"
 )
 
+// callbackPrivmsg() runs when the bot receives a message. Every message is
+// stored so it can be cycled through to build a quote.
 func (q *EventFnProvider) callbackPrivmsg(e *irc.Event) {
 	channel := e.Arguments[0]
 
-	// TODO strip bot commands from logged information?
-	q.qb.History[channel] = append(q.qb.History[channel], map[string]string{
-		"nick":      e.Nick,
-		"message":   e.Message(),
-		"timestamp": time.Now().String(),
-	})
+	if e.Nick != q.qb.Config.Nickname {
+		// Log message information for reading back later
+		q.qb.History[channel] = append(q.qb.History[channel], map[string]string{
+			"nick":      e.Nick,
+			"message":   e.Message(),
+			"timestamp": time.Now().String(),
+		})
+	}
 
-	if q.isCommandAttempt(e) {
+	if q.isCommandAttempt(e.Message()) {
 		q.handleCommand(e)
 	}
 }
 
-func (q *EventFnProvider) isCommandAttempt(e *irc.Event) bool {
-	if strings.HasPrefix(e.Message(), q.qb.Config.Trigger) {
+// isCommandAttempt() checks if a given message looks like a bot command.
+func (q *EventFnProvider) isCommandAttempt(message string) bool {
+	if strings.HasPrefix(message, q.qb.Config.Trigger) {
 		return true
 	}
 
 	return false
 }
 
+// handleCommand() organises arguments to a command and calls a function to run
+// it.
 func (q *EventFnProvider) handleCommand(e *irc.Event) {
 	args := strings.Split(e.Message(), " ")
 
@@ -51,11 +61,15 @@ func (q *EventFnProvider) handleCommand(e *irc.Event) {
 	}
 }
 
+// parseQuoteHelp() is run by the "quotehelp" command and displays commands
+// available to users of the bot.
 func (q EventFnProvider) parseQuoteHelp(e *irc.Event) {
 	q.qb.IRC.Privmsgf(e.Arguments[0], "Commands: %saddquote, %squotepage",
 		q.qb.Config.Trigger, q.qb.Config.Trigger)
 }
 
+// parseQuotePage() runs the "quotepage" command which displays the URL for the
+// web output page.
 func (q EventFnProvider) parseQuotePage(e *irc.Event) {
 	channel := url.PathEscape(e.Arguments[0])
 	loc := fmt.Sprintf("%schannel/%s", q.qb.Config.BaseURL, channel)
@@ -65,26 +79,8 @@ func (q EventFnProvider) parseQuotePage(e *irc.Event) {
 
 // parseAddQuote() handles the "addquote" command and needs refactoring.
 func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
-	var (
-		lines   []map[string]string
-		options []string
-	)
-
 	channel := e.Arguments[0]
-	matched := false
-
-	// TODO https://golang.org/pkg/flag/#FlagSet
-	r := regexp.MustCompile("([^\"]*)")
-	matches := r.FindAllStringSubmatch(argsWithoutCmd, -1)
-
-	for i, v := range matches {
-		// Skip non-options (i.e. strings between options).
-		if i % 2 == 0 {
-			continue
-		}
-
-		options = append(options, v[0])
-	}
+	options := helper.OptionsFromString(argsWithoutCmd)
 
 	if len(options) < 1 || options[0] == "" || (len(options) == 2 && options[1] == "") {
 		q.qb.IRC.Privmsg(channel, `The 'addquote' command requires one or two arguments ("start string" [and "end string"])`)
@@ -96,24 +92,19 @@ func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 		options = append(options, options[0])
 	}
 
-	for _, line := range q.qb.History[channel] {
-		if strings.HasPrefix(line["message"], options[0]) {
-			matched = true
-		}
-
-		if matched {
-			lines = append(lines, line)
-		}
-
-		if strings.HasPrefix(line["message"], options[1]) {
-			matched = false
-			continue // ?
-		}
-	}
+	lines := helper.LinesFromHistory(q.qb.History[channel], options)
 
 	if len(lines) != 0 {
+		var createErrors []error
+
+		tx := q.qb.DB.Begin()
+
 		head := model.Head{Channel: channel}
-		q.qb.DB.Create(&head)
+		if headErr := tx.Create(&head).Error; headErr != nil {
+			q.qb.IRC.Privmsg(channel, "An error occurred creating the quote")
+			log.Println(headErr)
+			return
+		}
 
 		for _, line := range lines {
 			line := model.Line{
@@ -122,10 +113,20 @@ func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 				Head:    head,
 			}
 
-			q.qb.DB.Create(&line)
+			if err := tx.Create(&line).Error; err != nil {
+				log.Println(err)
+
+				createErrors = append(createErrors, err)
+			}
 		}
 
-		q.qb.IRC.Privmsgf(channel, "Quote added - %sview/%d",
-			q.qb.Config.BaseURL, head.ID)
+		if len(createErrors) == 0 {
+			tx.Commit()
+			q.qb.IRC.Privmsgf(channel, "Quote added - %sview/%d",
+				q.qb.Config.BaseURL, head.ID)
+		} else {
+			tx.Rollback()
+			q.qb.IRC.Privmsg(channel, "An error occurred creating the quote")
+		}
 	}
 }

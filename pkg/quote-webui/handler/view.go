@@ -1,3 +1,4 @@
+// The handler package contains controllers for displaying web pages.
 package handler
 
 import (
@@ -6,11 +7,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
-
 	"github.com/n7st/quoteDB/model"
+
+	"github.com/gorilla/mux"
 )
 
+// Content{} contains template variables.
 type Content struct {
 	Error   string
 	Title   string
@@ -20,6 +22,7 @@ type Content struct {
 	Lines   []model.Line
 }
 
+// ViewHandler() displays an individual quote.
 func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	lines := []model.Line{}

@@ -1,3 +1,5 @@
+// The util package provides functionality needed by all binaries in the
+// project.
 package util
 
 import (
@@ -8,6 +10,7 @@ import (
 	"github.com/thoj/go-ircevent"
 )
 
+// InitIRC() creates a go-ircevent object using config variables.
 func InitIRC(config *Config) *irc.Connection {
 	bot := irc.IRC(config.Nickname, config.Ident)
 

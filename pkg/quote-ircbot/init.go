@@ -1,10 +1,10 @@
 package quote_ircbot
 
 import (
+	"github.com/n7st/quoteDB/util"
+
 	"github.com/thoj/go-ircevent"
 	"github.com/jinzhu/gorm"
-
-	"github.com/n7st/quoteDB/util"
 )
 
 type QuoteBot struct {

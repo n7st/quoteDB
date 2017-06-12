@@ -1,8 +1,10 @@
+// Package event contains functions relating to IRC numeric events.
 package event
 
 import (
-	"github.com/thoj/go-ircevent"
 	"github.com/n7st/quoteDB/pkg/quote-ircbot"
+
+	"github.com/thoj/go-ircevent"
 )
 
 
