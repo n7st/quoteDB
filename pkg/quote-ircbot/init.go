@@ -1,4 +1,4 @@
-package ircbot
+package quote_ircbot
 
 import (
 	"github.com/thoj/go-ircevent"

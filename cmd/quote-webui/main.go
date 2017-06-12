@@ -5,7 +5,7 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/n7st/quoteDB/util"
-	"github.com/n7st/quoteDB/pkg/webui/handler"
+	"github.com/n7st/quoteDB/pkg/quote-webui/handler"
 	"log"
 )
 

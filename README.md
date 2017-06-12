@@ -7,8 +7,8 @@ database regularly.
 ## Installation
 
 * Install the software `go get github.com/n7st/quoteDB/...`
-* Run `ircbot` for the IRC end
-* Run `webui` for the web end (these will be renamed shortly)
+* Run `quote-ircbot` for the IRC end
+* Run `quote-webui` for the web end
 
 ## Usage
 
