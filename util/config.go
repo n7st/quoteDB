@@ -20,6 +20,7 @@ type Config struct {
 	UseTLS       bool     `yaml:"use_tls"`
 	Verbose      bool     `yaml:"verbose"`
 	Port         int      `yaml:"port"`
+	MaxQuoteSize int      `yaml:"max_size"`
 	AdminChannel string   `yaml:"admin_channel"`
 	DBPath       string   `yaml:"db_path"`
 	Ident        string   `yaml:"ident"`

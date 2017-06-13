@@ -26,6 +26,19 @@ func (q *EventFnProvider) callbackPrivmsg(e *irc.Event) {
 			"message":   e.Message(),
 			"timestamp": time.Now().String(),
 		})
+
+		maxLen := q.qb.Config.MaxQuoteSize
+		currentLen := len(q.qb.History[channel])
+
+		if currentLen > maxLen {
+			// Trim messages past max length out of the slice
+			newStart := currentLen - maxLen
+			q.qb.History[channel] = q.qb.History[channel][newStart:]
+		}
+
+		for _, v := range q.qb.History[channel] {
+			fmt.Println(v["message"])
+		}
 	}
 
 	if q.isCommandAttempt(e.Message()) {
@@ -93,6 +106,11 @@ func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 	}
 
 	lines := helper.LinesFromHistory(q.qb.History[channel], options)
+
+	if len(lines) > q.qb.Config.MaxQuoteSize {
+		q.qb.IRC.Privmsgf(channel, "That quote is too long (max %d lines)", q.qb.Config.MaxQuoteSize)
+		return
+	}
 
 	if len(lines) != 0 {
 		var createErrors []error
