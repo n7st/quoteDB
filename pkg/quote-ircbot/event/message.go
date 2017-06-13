@@ -35,10 +35,6 @@ func (q *EventFnProvider) callbackPrivmsg(e *irc.Event) {
 			newStart := currentLen - maxLen
 			q.qb.History[channel] = q.qb.History[channel][newStart:]
 		}
-
-		for _, v := range q.qb.History[channel] {
-			fmt.Println(v["message"])
-		}
 	}
 
 	if q.isCommandAttempt(e.Message()) {
