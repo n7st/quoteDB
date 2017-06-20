@@ -19,6 +19,8 @@ func (q *EventFnProvider) callback001(e *irc.Event) {
 
 		q.qb.IRC.Privmsgf("nickserv", "recover %s %s",
 			q.qb.Config.Nickname, q.qb.Config.Password)
+
+		q.qb.Recover = false
 	}
 
 	if q.qb.Config.Password != "" {
