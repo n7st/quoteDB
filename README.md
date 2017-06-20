@@ -22,8 +22,15 @@ to quote-ircbot or quote-webui:
 * From IRC, `!addquote "first part of first message" "first part of last message"`
 will create a quote starting at a line beginning "first part of first message"
 and ending at a line beginning "first part of last message".
-* From the browser, you can navigate to http://example.site.com:8080/view/{id} or
-http://example.site.com:8080/channel/%23channelname.
+* From the browser, you can navigate to http://example.site.com:8080/view/10
+(where quote ID is "10") or http://example.site.com:8080/channel/%23channelname
+(where the channel's name is "#channelname", with the hash escaped).
+
+## Limitations
+
+* See the [project's issues](https://github.com/n7st/quoteDB/issues).
+* Messages starting with quotation marks currently cannot be used as a start or
+end point.
 
 ## License
 

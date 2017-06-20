@@ -14,6 +14,8 @@ type QuoteBot struct {
 
 	// Channel -> User -> Message
 	History map[string][]map[string]string
+
+	Recover bool
 }
 
 func NewQuoteBot(bot *irc.Connection, db *gorm.DB, config *util.Config) *QuoteBot {
@@ -23,6 +25,7 @@ func NewQuoteBot(bot *irc.Connection, db *gorm.DB, config *util.Config) *QuoteBo
 		IRC:    bot,
 
 		History: make(map[string][]map[string]string),
+		Recover: false,
 	}
 }
 

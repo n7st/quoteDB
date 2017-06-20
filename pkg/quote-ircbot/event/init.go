@@ -23,7 +23,7 @@ func ircEvents(p EventFnProvider) map[string]func(e *irc.Event) {
 	return map[string]func(e *irc.Event){
 		// basic.go
 		"001": p.callback001,
-		"443": p.callback443,
+		"433": p.callback433,
 		"900": p.callback900,
 
 		// message.go
