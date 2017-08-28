@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/n7st/quoteDB/model"
-	"github.com/n7st/quoteDB/pkg/quote-ircbot/helper"
+	"github.com/n7st/quoteDB/pkg/quoteDB/helper"
 
 	"github.com/thoj/go-ircevent"
 )

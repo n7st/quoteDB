@@ -2,16 +2,16 @@
 package event
 
 import (
-	"github.com/n7st/quoteDB/pkg/quote-ircbot"
+	"github.com/n7st/quoteDB/pkg/quoteDB"
 
 	"github.com/thoj/go-ircevent"
 )
 
 type EventFnProvider struct {
-	qb *quote_ircbot.QuoteBot
+	qb *quoteDB.QuoteBot
 }
 
-func Initialise(qb *quote_ircbot.QuoteBot) {
+func Initialise(qb *quoteDB.QuoteBot) {
 	provider := EventFnProvider{qb: qb}
 
 	for name, fn := range ircEvents(provider) {

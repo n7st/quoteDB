@@ -1,4 +1,4 @@
-package quote_ircbot
+package quoteDB
 
 import (
 	"github.com/n7st/quoteDB/util"
@@ -18,6 +18,7 @@ type QuoteBot struct {
 	Recover bool
 }
 
+// Creates a QuoteBot struct.
 func NewQuoteBot(bot *irc.Connection, db *gorm.DB, config *util.Config) *QuoteBot {
 	return &QuoteBot{
 		Config: config,
@@ -29,11 +30,8 @@ func NewQuoteBot(bot *irc.Connection, db *gorm.DB, config *util.Config) *QuoteBo
 	}
 }
 
+// Join a provided list of channels
 func (q *QuoteBot) JoinChannels(channels []string) {
-	if len(channels) == 0 {
-		return
-	}
-
 	for _, channel := range channels {
 		q.IRC.Join(channel)
 	}
