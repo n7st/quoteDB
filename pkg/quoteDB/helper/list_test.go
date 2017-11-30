@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"testing"
 	"time"
-
-	"github.com/n7st/quoteDB/pkg/quoteDB/helper"
 )
 
 // Example mock input structured the same as in the bot's memory
@@ -43,7 +41,7 @@ func TestLinesFromHistory(t *testing.T) {
 	options := []string{"Foo", "Baz"}
 
 	t.Run("History check", func(t *testing.T) {
-		lines := helper.LinesFromHistory(input, options)
+		lines := LinesFromHistory(input, options)
 
 		// input[1..3] have been requested from history
 		if len(lines) != 3 {

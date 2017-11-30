@@ -3,8 +3,6 @@ package helper
 import (
 	"fmt"
 	"testing"
-
-	"github.com/n7st/quoteDB/pkg/quoteDB/helper"
 )
 
 // TestOptionsFromString() runs the OptionsFromString() helper twice and
@@ -12,8 +10,8 @@ import (
 func TestOptionsFromString(t *testing.T) {
 	input1 := `A string with "one" and "two" individual word options in it`
 	input2 := `A string with "one multiword option" and a "second multiword option"`
-	output1 := helper.OptionsFromString(input1)
-	output2 := helper.OptionsFromString(input2)
+	output1 := OptionsFromString(input1)
+	output2 := OptionsFromString(input2)
 
 	t.Run("Options check", func(t *testing.T) {
 		if len(output1) != 2 {
