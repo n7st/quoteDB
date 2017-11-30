@@ -1,0 +1,17 @@
+language: go
+
+branches:
+    only:
+        - master
+        - unstable
+
+go:
+    - 1.9.2
+    - 1.7.x
+    - master
+
+install:
+    - go get -t ./...
+
+script:
+    - go test -v ./...
