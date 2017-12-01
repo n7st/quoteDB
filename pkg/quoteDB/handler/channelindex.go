@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/n7st/quoteDB/model"
+	"github.com/n7st/quoteDB/pkg/quoteDB/model"
 
 	"github.com/gorilla/mux"
 )

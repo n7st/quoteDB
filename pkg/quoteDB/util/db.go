@@ -5,7 +5,7 @@ package util
 import (
 	"log"
 
-	"github.com/n7st/quoteDB/model"
+	"github.com/n7st/quoteDB/pkg/quoteDB/model"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"

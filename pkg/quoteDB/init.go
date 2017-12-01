@@ -1,7 +1,7 @@
 package quoteDB
 
 import (
-	"github.com/n7st/quoteDB/util"
+	"github.com/n7st/quoteDB/pkg/quoteDB/util"
 
 	"github.com/jinzhu/gorm"
 	"github.com/thoj/go-ircevent"

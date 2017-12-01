@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/n7st/quoteDB/model"
+	"github.com/n7st/quoteDB/pkg/quoteDB/model"
 	"github.com/n7st/quoteDB/pkg/quoteDB/helper"
 
 	"github.com/thoj/go-ircevent"
