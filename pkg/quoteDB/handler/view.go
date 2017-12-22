@@ -35,7 +35,7 @@ func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
 		content.Title = "No such quote"
 		content.Error = "Was an invalid ID used?"
 	} else {
-		content.Title = fmt.Sprintf("%s at %s", lines[0].Head.Channel, lines[0].CreatedAt)
+		content.Title = fmt.Sprintf("%s at %s", lines[0].Head.Channel.Name, lines[0].CreatedAt)
 		content.Lines = lines
 		content.Channel = lines[0].Head.Channel.Name
 		content.Date = lines[0].Head.CreatedAt.UTC()
