@@ -23,8 +23,9 @@ type ChannelIndexContent struct {
 // {channel}.
 func (h *Handler) ChannelIndexHandler(w http.ResponseWriter, r *http.Request) {
 	var (
-		head []model.Head
-		out  []model.Head
+		channel model.Channel
+		heads   []model.Head
+		out     []model.Head
 	)
 
 	vars := mux.Vars(r)
@@ -33,25 +34,23 @@ func (h *Handler) ChannelIndexHandler(w http.ResponseWriter, r *http.Request) {
 		Trigger: h.Config.Trigger,
 	}
 
-	h.DB.Find(&head, model.Head{Channel: vars["name"]})
+	h.DB.Find(&channel, model.Channel{Name: vars["name"]})
 
-	if len(head) == 0 {
-		content.Error = "Could not find any quotes"
-	} else {
-		for _, hx := range head {
-			var lines []model.Line
-			h.DB.Model(&hx).Related(&lines)
+	h.DB.Model(&channel).Related(&heads)
 
-			if hx.Title == "" {
-				hx.Title = fmt.Sprintf(`%s "%s"`,
-					lines[0].Author, lines[0].Content)
-			}
+	for _, hx := range heads {
+		var lines []model.Line
+		h.DB.Model(&hx).Related(&lines)
 
-			out = append(out, hx)
+		if hx.Title == "" {
+			hx.Title = fmt.Sprintf(`%s "%s"`,
+				lines[0].Author, lines[0].Content)
 		}
 
-		content.Instances = out
+		out = append(out, hx)
 	}
+
+	content.Instances = out
 
 	err := templates.ExecuteTemplate(w, "channelindex", content)
 

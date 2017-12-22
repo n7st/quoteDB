@@ -27,6 +27,7 @@ func InitDB(config *Config) *gorm.DB {
 // autoMigrate() initialises models in the list as database tables
 func autoMigrate(db *gorm.DB) {
 	db.AutoMigrate(
+		&model.Channel{},
 		&model.Head{},
 		&model.Line{},
 	)

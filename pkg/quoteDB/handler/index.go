@@ -5,11 +5,20 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"github.com/n7st/quoteDB/pkg/quoteDB/model"
 )
+
+type IndexContent struct {
+	Channels []string
+}
 
 // IndexHandler() displays the website's front page.
 func (h *Handler) IndexHandler(w http.ResponseWriter, r *http.Request) {
-	err := templates.ExecuteTemplate(w, "index", "")
+	content := &IndexContent{}
+
+	h.DB.Model(&model.Head{}).Select(&content.Channels, "DISTINCT `channel`")
+	err := templates.ExecuteTemplate(w, "index", content)
+	fmt.Print(content.Channels)
 
 	if err != nil {
 		log.Println(err)

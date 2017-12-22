@@ -37,7 +37,7 @@ func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		content.Title = fmt.Sprintf("%s at %s", lines[0].Head.Channel, lines[0].CreatedAt)
 		content.Lines = lines
-		content.Channel = lines[0].Head.Channel
+		content.Channel = lines[0].Head.Channel.Name
 		content.Date = lines[0].Head.CreatedAt.UTC()
 		content.ID = lines[0].Head.ID
 	}

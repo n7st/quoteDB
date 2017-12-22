@@ -8,8 +8,10 @@ import "github.com/jinzhu/gorm"
 type Head struct {
 	gorm.Model
 
-	Channel string
+	//Channel string
 	Title   string
 
-	Lines []Line
+	Channel   Channel
+	ChannelID uint
+	Lines     []Line
 }
