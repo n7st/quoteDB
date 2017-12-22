@@ -9,7 +9,7 @@ import (
 // validates the output.
 func TestOptionsFromString(t *testing.T) {
 	input1 := `A string with "one" and "two" individual word options in it`
-	input2 := `A string with "one multiword option" and a "second multiword option"`
+	input2 := `A string with "one multi-word option" and a "second multi-word option"`
 	input3 := `A string with "a first match", "a second match" and "a third match"`
 	output1 := OptionsFromString(input1)
 	output2 := OptionsFromString(input2)
@@ -36,12 +36,12 @@ func TestOptionsFromString(t *testing.T) {
 			t.Fail()
 		}
 
-		if output2[0] != "one multiword option" {
+		if output2[0] != "one multi-word option" {
 			fmt.Println("[2] The first option is incorrect")
 			t.Fail()
 		}
 
-		if output2[1] != "second multiword option" {
+		if output2[1] != "second multi-word option" {
 			fmt.Println("[2] The second option is incorrect")
 			t.Fail()
 		}

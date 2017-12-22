@@ -9,9 +9,9 @@ import (
 	"github.com/go-yaml/yaml"
 )
 
-// DEFAULT_CONFIG_FILE_LOCATION can be overridden by passing a command-line
+// defaultConfigFileLocation can be overridden by passing a command-line
 // argument to the program.
-const DEFAULT_CONFIG_FILE_LOCATION = "./data/config.yaml"
+const defaultConfigFileLocation = "./data/config.yaml"
 
 // Config{} contains configuration values for the bot and web server.
 type Config struct {
@@ -41,7 +41,7 @@ func NewConfig(params ...string) *Config {
 	if len(params) > 0 {
 		configFileLocation = params[0]
 	} else {
-		configFileLocation = DEFAULT_CONFIG_FILE_LOCATION
+		configFileLocation = defaultConfigFileLocation
 	}
 
 	data, err := ioutil.ReadFile(configFileLocation)
@@ -66,5 +66,4 @@ func NewConfig(params ...string) *Config {
 	}
 
 	return config
-
 }

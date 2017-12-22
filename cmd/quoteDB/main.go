@@ -7,8 +7,8 @@ import (
 
 	"github.com/n7st/quoteDB/pkg/quoteDB"
 	"github.com/n7st/quoteDB/pkg/quoteDB/event"
-	"github.com/n7st/quoteDB/pkg/quoteDB/util"
 	"github.com/n7st/quoteDB/pkg/quoteDB/handler"
+	"github.com/n7st/quoteDB/pkg/quoteDB/util"
 
 	"github.com/gorilla/handlers"
 )

@@ -24,8 +24,9 @@ type Content struct {
 
 // ViewHandler() displays an individual quote.
 func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
+	var lines []model.Line
+
 	vars := mux.Vars(r)
-	lines := []model.Line{}
 	content := &Content{}
 
 	h.DB.Preload("Head").Find(&lines, "head_id = ?", vars["id"])

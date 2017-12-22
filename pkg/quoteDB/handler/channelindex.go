@@ -19,12 +19,6 @@ type ChannelIndexContent struct {
 	Trigger   string
 }
 
-// headWithLines{} stores a full quote.
-type headWithLines struct {
-	Head  model.Head
-	Lines []model.Line
-}
-
 // ChannelIndexHandler() displays a page with a list of quotes for the given
 // {channel}.
 func (h *Handler) ChannelIndexHandler(w http.ResponseWriter, r *http.Request) {
