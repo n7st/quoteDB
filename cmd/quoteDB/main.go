@@ -4,6 +4,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/n7st/quoteDB/pkg/quoteDB"
 	"github.com/n7st/quoteDB/pkg/quoteDB/event"
@@ -16,7 +17,14 @@ import (
 // main() is the program's main loop. It instantiates the bot and web UI and
 // connects them to IRC until they are killed.
 func main() {
-	config := util.NewConfig("data/config.yaml")
+	var config *util.Config
+
+	if len(os.Args) > 1 {
+		config = util.NewConfig(os.Args[1])
+	} else {
+		config = util.NewConfig()
+	}
+
 	bot := util.InitIRC(config)
 	db := util.InitDB(config)
 	router := handler.NewHandler(db, config).Router()

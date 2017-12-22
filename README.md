@@ -8,7 +8,7 @@ IRC quotemaker with a web frontend for viewing saved quotes.
 
 * Install the software `go get github.com/n7st/quoteDB/...`
 * `cd` to the directory where it's installed (probably `~/go/src/github.com/n7st/quoteDB`
-* Copy `data/config_example.yaml` to `data/config.yaml` and edit it
+* Copy `data/config_example.yaml` to `~/.config/netsplit/quoteDB/config.yaml` and edit it
 * Run `quoteDB`
 
 You can pass one command-line argument, the path to a YAML configuration file,

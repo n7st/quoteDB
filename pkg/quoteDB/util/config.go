@@ -7,11 +7,14 @@ import (
 	"log"
 
 	"github.com/go-yaml/yaml"
+	"github.com/shibukawa/configdir"
 )
 
-// defaultConfigFileLocation can be overridden by passing a command-line
-// argument to the program.
-const defaultConfigFileLocation = "./data/config.yaml"
+const (
+	configFileName  = "config.yaml"
+	vendorName      = "netsplit"
+	applicationName = "quoteDB"
+)
 
 // Config{} contains configuration values for the bot and web server.
 type Config struct {
@@ -37,14 +40,23 @@ type Config struct {
 func NewConfig(params ...string) *Config {
 	var configFileLocation string
 	var config = &Config{}
+	var data []byte
+	var err error
 
 	if len(params) > 0 {
 		configFileLocation = params[0]
-	} else {
-		configFileLocation = defaultConfigFileLocation
-	}
 
-	data, err := ioutil.ReadFile(configFileLocation)
+		data, err = ioutil.ReadFile(configFileLocation)
+	} else {
+		configDirs := configdir.New(vendorName, applicationName)
+		folder := configDirs.QueryFolderContainsFile(configFileName)
+
+		if folder != nil {
+			log.Println("Loading config from default location")
+
+			data, err = folder.ReadFile(configFileName)
+		}
+	}
 
 	if err != nil {
 		log.Fatal(err) // We cannot continue without configuration
