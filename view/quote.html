@@ -15,7 +15,9 @@
         <table class="table table-sm">
             <thead>
                 <tr>
-                    <th colspan="2">{{.Channel}} at {{.Date}}</th>
+                    <th colspan="2">
+                        {{.Channel}} on {{.Date.Format "2006-01-02"}} at {{.Date.Format "15:04:05"}}
+                    </th>
                 </tr>
                 <tr>
                     <th style="width: 25%">Author</th>

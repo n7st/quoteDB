@@ -20,8 +20,8 @@
         <thead>
             <tr>
                 <th style="width: 5%">ID</th>
-                <th style="width: 40%">Date</th>
-                <th style="width: 55%">Title</th>
+                <th style="width: 10%">Date</th>
+                <th style="width: 85%">Title</th>
             </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@
                 <td>
                     <a href="/view/{{$value.ID}}">{{$value.ID}}</a>
                 </td>
-                <td>{{$value.CreatedAt}}</td>
+                <td>{{$value.CreatedAt.Format "2006-01-02"}}</td>
                 <td>
                     <a href="/view/{{$value.ID}}">{{$value.Title}}</a>
                 </td>
