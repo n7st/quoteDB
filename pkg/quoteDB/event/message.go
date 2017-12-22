@@ -116,6 +116,7 @@ func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 		mChannel := model.Channel{Name: channel}
 		tx.Find(&mChannel)
 
+		// TODO: refactor
 		if mChannel.ID == 0 {
 			if mChannelErr := tx.Create(&mChannel).Error; mChannelErr != nil {
 				q.qb.IRC.Privmsg(channel, "An error occurred creating the quote")

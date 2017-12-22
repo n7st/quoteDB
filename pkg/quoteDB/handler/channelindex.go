@@ -35,7 +35,6 @@ func (h *Handler) ChannelIndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.DB.Find(&channel, model.Channel{Name: vars["name"]})
-
 	h.DB.Model(&channel).Related(&heads)
 
 	for _, hx := range heads {

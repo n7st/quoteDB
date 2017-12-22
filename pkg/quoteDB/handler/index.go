@@ -9,16 +9,16 @@ import (
 )
 
 type IndexContent struct {
-	Channels []string
+	Channels []model.Channel
 }
 
 // IndexHandler() displays the website's front page.
 func (h *Handler) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	content := &IndexContent{}
 
-	h.DB.Model(&model.Head{}).Select(&content.Channels, "DISTINCT `channel`")
+	h.DB.Find(&content.Channels, model.Channel{})
+
 	err := templates.ExecuteTemplate(w, "index", content)
-	fmt.Print(content.Channels)
 
 	if err != nil {
 		log.Println(err)
