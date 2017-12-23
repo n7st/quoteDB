@@ -113,7 +113,19 @@ func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 
 		tx := q.qb.DB.Begin()
 
-		head := model.Head{Channel: channel}
+		mChannel := model.Channel{Name: channel}
+		tx.Find(&mChannel)
+
+		// TODO: refactor
+		if mChannel.ID == 0 {
+			if mChannelErr := tx.Create(&mChannel).Error; mChannelErr != nil {
+				q.qb.IRC.Privmsg(channel, "An error occurred creating the quote")
+				log.Println(mChannelErr)
+				return
+			}
+		}
+
+		head := model.Head{Channel: mChannel}
 		if headErr := tx.Create(&head).Error; headErr != nil {
 			q.qb.IRC.Privmsg(channel, "An error occurred creating the quote")
 			log.Println(headErr)

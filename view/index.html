@@ -3,5 +3,22 @@
         <h1>Quty IRC Quote Database</h1>
 
         <p>Welcome to this IRC quote database.</p>
+
+        <table class="table table-sm dataTable">
+            <thead>
+                <th style="width: 5%">ID</th>
+                <th style="width: 15%">Added</th>
+                <th style="width: 80%">Name</th>
+            </thead>
+            <tbody>
+                {{range $key, $value := .Channels}}
+                <tr>
+                    <td><a href="/channel/{{$value.Name | urlquery}}">{{$value.ID}}</a></td>
+                    <td>{{$value.CreatedAt.Format "2006-01-02"}}</td>
+                    <td><a href="/channel/{{$value.Name | urlquery }}">{{$value.Name}}</a></td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
     {{template "footer"}}
 {{end}}
