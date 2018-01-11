@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -12,6 +13,14 @@ import (
 	"github.com/n7st/quoteDB/pkg/quoteDB/model"
 
 	"github.com/thoj/go-ircevent"
+)
+
+const (
+	// Bot commands
+	quoteLastCmd = "quotelast"
+	addQuoteCmd  = "addquote"
+	quoteHelpCmd = "quotehelp"
+	quotePageCmd = "quotepage"
 )
 
 // callbackPrivmsg() runs when the bot receives a message. Every message is
@@ -59,14 +68,33 @@ func (q *EventFnProvider) handleCommand(e *irc.Event) {
 	command := strings.TrimPrefix(args[0], q.qb.Config.Trigger)
 	argsWithoutCmd := strings.Join(args[1:], " ")
 
-	if command == "addquote" {
+	switch command {
+	case addQuoteCmd:
 		if argsWithoutCmd != "" {
 			q.parseAddQuote(e, argsWithoutCmd)
 		}
-	} else if command == "quotehelp" {
+	case quoteLastCmd:
+		if argsWithoutCmd != "" {
+			q.parseQuoteLast(e, argsWithoutCmd)
+		}
+	case quoteHelpCmd:
 		q.parseQuoteHelp(e)
-	} else if command == "quotepage" {
+	case quotePageCmd:
 		q.parseQuotePage(e)
+	}
+}
+
+func (q EventFnProvider) parseQuoteLast(e *irc.Event, argsWithoutCmd string) {
+	histLen, err := strconv.Atoi(argsWithoutCmd)
+
+	if err == nil && histLen > 0 {
+		channel := e.Arguments[0]
+		lines := helper.LastNLinesFromHistory(q.qb.History[channel], histLen)
+
+		if len(lines) > 0 {
+		}
+	} else {
+		q.qb.IRC.Privmsgf(e.Arguments[0], "%s is not a positive integer", argsWithoutCmd)
 	}
 }
 
