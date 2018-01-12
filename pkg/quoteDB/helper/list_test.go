@@ -106,8 +106,6 @@ func TestLastNLinesFromHistory(t *testing.T) {
 	t.Run("Check for overflow", func(t *testing.T) {
 		lines := LastNLinesFromHistory(input, 7)
 
-		fmt.Println(lines)
-
 		if len(lines) != len(input) {
 			fmt.Println("Expected five lines")
 			t.Fail()
