@@ -14,26 +14,32 @@ const (
 	configFileName  = "config.yaml"
 	vendorName      = "netsplit"
 	applicationName = "quoteDB"
+
+	defaultPort           = 6667
+	defaultTrigger        = "!"
+	defaultMaxHistorySize = 200
+	defaultMaxQuoteSize   = 50
 )
 
 // Config{} contains configuration values for the bot and web server.
 type Config struct {
-	Channels     []string `yaml:"channels"`
-	Debug        bool     `yaml:"debug"`
-	UseTLS       bool     `yaml:"use_tls"`
-	Verbose      bool     `yaml:"verbose"`
-	Port         int      `yaml:"port"`
-	MaxQuoteSize int      `yaml:"max_size"`
-	AdminChannel string   `yaml:"admin_channel"`
-	DBPath       string   `yaml:"db_path"`
-	Ident        string   `yaml:"ident"`
-	Modes        string   `yaml:"modes"`
-	Nickname     string   `yaml:"nickname"`
-	Password     string   `yaml:"nickserv_password"`
-	Server       string   `yaml:"server"`
-	Trigger      string   `yaml:"command_trigger"`
-	BaseURL      string   `yaml:"base_url"`
-	WebUIPort    string   `yaml:"webui_port"`
+	Channels       []string `yaml:"channels"`
+	Debug          bool     `yaml:"debug"`
+	UseTLS         bool     `yaml:"use_tls"`
+	Verbose        bool     `yaml:"verbose"`
+	Port           int      `yaml:"port"`
+	MaxQuoteSize   int      `yaml:"max_quote_size"`
+	MaxHistorySize int      `yaml:"max_history_size"`
+	AdminChannel   string   `yaml:"admin_channel"`
+	DBPath         string   `yaml:"db_path"`
+	Ident          string   `yaml:"ident"`
+	Modes          string   `yaml:"modes"`
+	Nickname       string   `yaml:"nickname"`
+	Password       string   `yaml:"nickserv_password"`
+	Server         string   `yaml:"server"`
+	Trigger        string   `yaml:"command_trigger"`
+	BaseURL        string   `yaml:"base_url"`
+	WebUIPort      string   `yaml:"webui_port"`
 }
 
 // NewConfig() creates a new Config{} from a YAML file and sets some defaults.
@@ -70,11 +76,19 @@ func NewConfig(params ...string) *Config {
 
 	// Fall back to a standard port
 	if config.Port == 0 {
-		config.Port = 6667
+		config.Port = defaultPort
 	}
 
 	if config.Trigger == "" {
-		config.Trigger = "!"
+		config.Trigger = defaultTrigger
+	}
+
+	if config.MaxQuoteSize == 0 {
+		config.MaxQuoteSize = defaultMaxQuoteSize
+	}
+
+	if config.MaxHistorySize == 0 {
+		config.MaxHistorySize = defaultMaxHistorySize
 	}
 
 	return config

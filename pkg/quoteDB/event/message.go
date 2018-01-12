@@ -39,7 +39,7 @@ func (q *EventFnProvider) callbackPrivmsg(e *irc.Event) {
 			"timestamp": time.Now().String(),
 		})
 
-		maxLen := q.qb.Config.MaxQuoteSize
+		maxLen := q.qb.Config.MaxHistorySize
 		currentLen := len(q.qb.History[channel])
 
 		if currentLen > maxLen {
@@ -112,7 +112,7 @@ func (q *EventFnProvider) parseQuotePage(e *irc.Event) {
 	q.qb.IRC.Privmsgf(e.Arguments[0], "Quotes for this channel can be found at %s", loc)
 }
 
-// parseAddQuote() handles the "addquote" command and needs refactoring.
+// parseAddQuote() handles the "addquote" command.
 func (q *EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 	channel := e.Arguments[0]
 	options := helper.OptionsFromString(argsWithoutCmd)
@@ -129,11 +129,6 @@ func (q *EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 
 	lines := helper.LinesFromHistory(q.qb.History[channel], options)
 
-	if len(lines) > q.qb.Config.MaxQuoteSize {
-		q.qb.IRC.Privmsgf(channel, "That quote is too long (max %d lines)", q.qb.Config.MaxQuoteSize)
-		return
-	}
-
 	q.addQuoteLines(channel, lines)
 }
 
@@ -141,6 +136,11 @@ func (q *EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 // channel in the database.
 // TODO: this might be better as part of a "repository" package.
 func (q *EventFnProvider) addQuoteLines(channel string, lines []map[string]string) {
+	if len(lines) > q.qb.Config.MaxQuoteSize {
+		q.qb.IRC.Privmsgf(channel, "That quote is too long (max %d lines)", q.qb.Config.MaxQuoteSize)
+		return
+	}
+
 	if len(lines) != 0 {
 		var createErrors []error
 
@@ -186,5 +186,8 @@ func (q *EventFnProvider) addQuoteLines(channel string, lines []map[string]strin
 			tx.Rollback()
 			q.qb.IRC.Privmsg(channel, "An error occurred creating the quote")
 		}
+	} else {
+		q.qb.IRC.Privmsgf(channel, "No lines were collected (maximum size: %d)",
+			q.qb.Config.MaxQuoteSize)
 	}
 }
