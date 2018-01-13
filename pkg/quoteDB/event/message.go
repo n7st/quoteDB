@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -14,12 +15,23 @@ import (
 	"github.com/thoj/go-ircevent"
 )
 
+const (
+	// Bot commands
+	quoteLastCmd = "quotelast"
+	addQuoteCmd  = "addquote"
+	quoteHelpCmd = "quotehelp"
+	quotePageCmd = "quotepage"
+)
+
 // callbackPrivmsg() runs when the bot receives a message. Every message is
-// stored so it can be cycled through to build a quote.
+// stored so it can be cycled through to build a quote. Command attempts are
+// not logged into history.
 func (q *EventFnProvider) callbackPrivmsg(e *irc.Event) {
 	channel := e.Arguments[0]
 
-	if e.Nick != q.qb.Config.Nickname {
+	if q.isCommandAttempt(e.Message()) {
+		q.handleCommand(e)
+	} else if e.Nick != q.qb.Config.Nickname {
 		// Log message information for reading back later
 		q.qb.History[channel] = append(q.qb.History[channel], map[string]string{
 			"nick":      e.Nick,
@@ -27,7 +39,7 @@ func (q *EventFnProvider) callbackPrivmsg(e *irc.Event) {
 			"timestamp": time.Now().String(),
 		})
 
-		maxLen := q.qb.Config.MaxQuoteSize
+		maxLen := q.qb.Config.MaxHistorySize
 		currentLen := len(q.qb.History[channel])
 
 		if currentLen > maxLen {
@@ -35,10 +47,6 @@ func (q *EventFnProvider) callbackPrivmsg(e *irc.Event) {
 			newStart := currentLen - maxLen
 			q.qb.History[channel] = q.qb.History[channel][newStart:]
 		}
-	}
-
-	if q.isCommandAttempt(e.Message()) {
-		q.handleCommand(e)
 	}
 }
 
@@ -59,35 +67,53 @@ func (q *EventFnProvider) handleCommand(e *irc.Event) {
 	command := strings.TrimPrefix(args[0], q.qb.Config.Trigger)
 	argsWithoutCmd := strings.Join(args[1:], " ")
 
-	if command == "addquote" {
+	switch command {
+	case addQuoteCmd:
 		if argsWithoutCmd != "" {
 			q.parseAddQuote(e, argsWithoutCmd)
 		}
-	} else if command == "quotehelp" {
+	case quoteLastCmd:
+		if argsWithoutCmd != "" {
+			q.parseQuoteLast(e, argsWithoutCmd)
+		}
+	case quoteHelpCmd:
 		q.parseQuoteHelp(e)
-	} else if command == "quotepage" {
+	case quotePageCmd:
 		q.parseQuotePage(e)
+	}
+}
+
+func (q *EventFnProvider) parseQuoteLast(e *irc.Event, argsWithoutCmd string) {
+	histLen, err := strconv.Atoi(argsWithoutCmd)
+
+	if err == nil && histLen > 0 {
+		channel := e.Arguments[0]
+		lines := helper.LastNLinesFromHistory(q.qb.History[channel], histLen)
+
+		q.addQuoteLines(channel, lines)
+	} else {
+		q.qb.IRC.Privmsgf(e.Arguments[0], "%s is not a positive integer", argsWithoutCmd)
 	}
 }
 
 // parseQuoteHelp() is run by the "quotehelp" command and displays commands
 // available to users of the bot.
-func (q EventFnProvider) parseQuoteHelp(e *irc.Event) {
+func (q *EventFnProvider) parseQuoteHelp(e *irc.Event) {
 	q.qb.IRC.Privmsgf(e.Arguments[0], "Commands: %saddquote, %squotepage",
 		q.qb.Config.Trigger, q.qb.Config.Trigger)
 }
 
 // parseQuotePage() runs the "quotepage" command which displays the URL for the
 // web output page.
-func (q EventFnProvider) parseQuotePage(e *irc.Event) {
+func (q *EventFnProvider) parseQuotePage(e *irc.Event) {
 	channel := url.PathEscape(e.Arguments[0])
 	loc := fmt.Sprintf("%schannel/%s", q.qb.Config.BaseURL, channel)
 
 	q.qb.IRC.Privmsgf(e.Arguments[0], "Quotes for this channel can be found at %s", loc)
 }
 
-// parseAddQuote() handles the "addquote" command and needs refactoring.
-func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
+// parseAddQuote() handles the "addquote" command.
+func (q *EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 	channel := e.Arguments[0]
 	options := helper.OptionsFromString(argsWithoutCmd)
 
@@ -103,6 +129,13 @@ func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 
 	lines := helper.LinesFromHistory(q.qb.History[channel], options)
 
+	q.addQuoteLines(channel, lines)
+}
+
+// addQuoteLines() runs a database transaction which adds a quote against a
+// channel in the database.
+// TODO: this might be better as part of a "repository" package.
+func (q *EventFnProvider) addQuoteLines(channel string, lines []map[string]string) {
 	if len(lines) > q.qb.Config.MaxQuoteSize {
 		q.qb.IRC.Privmsgf(channel, "That quote is too long (max %d lines)", q.qb.Config.MaxQuoteSize)
 		return
@@ -116,7 +149,6 @@ func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 		mChannel := model.Channel{Name: channel}
 		tx.Find(&mChannel)
 
-		// TODO: refactor
 		if mChannel.ID == 0 {
 			if mChannelErr := tx.Create(&mChannel).Error; mChannelErr != nil {
 				q.qb.IRC.Privmsg(channel, "An error occurred creating the quote")
@@ -154,5 +186,8 @@ func (q EventFnProvider) parseAddQuote(e *irc.Event, argsWithoutCmd string) {
 			tx.Rollback()
 			q.qb.IRC.Privmsg(channel, "An error occurred creating the quote")
 		}
+	} else {
+		q.qb.IRC.Privmsgf(channel, "No lines were collected (maximum size: %d)",
+			q.qb.Config.MaxQuoteSize)
 	}
 }

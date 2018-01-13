@@ -19,5 +19,8 @@ base_url: http://127.0.0.1:8080/
 # Port for the web UI's integrated webserver
 webui_port: 8080
 
-# Size limit for quotes and history storage
-max_size: 50
+# Size limit for quotes
+max_quote_size: 50
+
+# Maximum number of lines to keep in history per channel
+max_history_size: 100

@@ -26,3 +26,27 @@ func LinesFromHistory(input []map[string]string, options []string) (output []map
 
 	return
 }
+
+// LastNLinesFromHistory() gets the last n lines from the input array. If the
+// length of the input array is shorter than the requested length, it is set
+// to be the length of the array.
+func LastNLinesFromHistory(input []map[string]string, n int) (output []map[string]string) {
+	inpLen := len(input)
+	end := inpLen - n
+
+	if n >= inpLen {
+		end = 0
+	}
+
+	for i := inpLen - 1; i >= end; i-- {
+		output = append(output, input[i])
+	}
+
+	for i := len(output)/2 - 1; i >= 0; i-- {
+		opp := len(output) - 1 - i
+
+		output[i], output[opp] = output[opp], output[i]
+	}
+
+	return
+}

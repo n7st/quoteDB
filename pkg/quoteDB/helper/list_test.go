@@ -65,3 +65,50 @@ func TestLinesFromHistory(t *testing.T) {
 		}
 	})
 }
+
+// TestLastNLinesFromHistory() runs two tests to check the history returned is
+// as expected.
+func TestLastNLinesFromHistory(t *testing.T) {
+	t.Run("Last 2 lines from history", func(t *testing.T) {
+		lenParam := 2
+		lines := LastNLinesFromHistory(input, lenParam)
+
+		if len(lines) != lenParam {
+			fmt.Printf("Expected 2 lines, got %d\n", len(lines))
+			t.Fail()
+		}
+
+		if lines[0]["message"] != "Baz Test" {
+			fmt.Printf("The first message is incorrect (%s)\n",
+				lines[0]["message"])
+			t.Fail()
+		}
+
+		if lines[1]["message"] != "Last Message" {
+			fmt.Printf("The last message is incorrect (%s)\n",
+				lines[1]["message"])
+			t.Fail()
+		}
+	})
+
+	t.Run("Last 3 lines from history", func(t *testing.T) {
+		lenParam := 3
+		lines := LastNLinesFromHistory(input, lenParam)
+
+		if len(lines) != lenParam {
+			fmt.Printf("Expected 3 lines, got %d\n", len(lines))
+			t.Fail()
+		}
+	})
+
+	// The number passed to LastNLinesFromHistory() is larger than the length
+	// of the input. Check the array hasn't overflowed.
+	t.Run("Check for overflow", func(t *testing.T) {
+		lines := LastNLinesFromHistory(input, 7)
+
+		if len(lines) != len(input) {
+			fmt.Println("Expected five lines")
+			t.Fail()
+		}
+	})
+}
