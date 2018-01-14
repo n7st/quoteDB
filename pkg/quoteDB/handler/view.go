@@ -29,7 +29,7 @@ func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	content := &Content{}
 
-	h.DB.Preload("Head").Find(&lines, "head_id = ?", vars["id"])
+	h.DB.Preload("Head.Channel").Find(&lines, "head_id = ?", vars["id"])
 
 	if len(lines) == 0 {
 		content.Title = "No such quote"
