@@ -3,6 +3,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -24,6 +25,10 @@ func main() {
 	} else {
 		config = util.NewConfig()
 	}
+
+        if config.Server == "" {
+		log.Fatal("Invalid configuration provided")
+        }
 
 	bot := util.InitIRC(config)
 	db := util.InitDB(config)
