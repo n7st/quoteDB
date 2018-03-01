@@ -9,7 +9,11 @@ func LinesFromHistory(input []map[string]string, options []string) (output []map
 	matched := false
 
 	for _, line := range input {
-		if strings.HasPrefix(line["message"], options[0]) {
+		message := strings.ToLower(line["message"])
+		firstIdx := strings.ToLower(options[0])
+		secondIdx := strings.ToLower(options[1])
+
+		if strings.HasPrefix(message, firstIdx) {
 			matched = true
 		}
 
@@ -18,7 +22,7 @@ func LinesFromHistory(input []map[string]string, options []string) (output []map
 			output = append(output, line)
 		}
 
-		if strings.HasPrefix(line["message"], options[1]) {
+		if strings.HasPrefix(message, secondIdx) {
 			matched = false
 			break
 		}

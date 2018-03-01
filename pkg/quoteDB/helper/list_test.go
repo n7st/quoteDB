@@ -38,7 +38,7 @@ var input = []map[string]string{
 // TestLinesFromHistory() runs the LinesFromHistory() helper with the example
 // input and ensures its output is as expected
 func TestLinesFromHistory(t *testing.T) {
-	options := []string{"Foo", "Baz"}
+	options := []string{"Foo", "baz"} // lower case should work too
 
 	t.Run("History check", func(t *testing.T) {
 		lines := LinesFromHistory(input, options)
