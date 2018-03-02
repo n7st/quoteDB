@@ -4,7 +4,7 @@ services:
     quotedb:
         build: .
         volumes:
-            - .:/go/src/github.com/n7st/quoteDB
+            - ./data:/go/src/github.com/n7st/quoteDB/data
         working_dir: /go/src/github.com/n7st/quoteDB
         ports:
             - 3000:8080
