@@ -6,6 +6,18 @@ IRC quotemaker with a web frontend for viewing saved quotes.
 
 ## Installation
 
+### With Docker Compose
+
+* Clone the repository and enter the directory
+* Copy `data/example_config.yaml` to `data/config.yaml` and edit it
+* `docker-compose build`
+* `docker-compose up`
+
+Changing the config after installation is permitted (edit `data/config.yaml` on
+the host machine).
+
+### Manually
+
 * Install the software `go get github.com/n7st/quoteDB/...`
 * `cd` to the directory where it's installed (probably `~/go/src/github.com/n7st/quoteDB`
 * Copy `data/config_example.yaml` to `~/.config/netsplit/quoteDB/config.yaml` and edit it
