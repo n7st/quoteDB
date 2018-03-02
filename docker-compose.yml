@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+    quotedb:
+        build: .
+        volumes:
+            - .:/go/src/github.com/n7st/quoteDB
+        working_dir: /go/src/github.com/n7st/quoteDB
+        ports:
+            - 3000:8080
+        command: go run cmd/quoteDB/main.go /go/src/github.com/n7st/quoteDB/data/config.yaml
