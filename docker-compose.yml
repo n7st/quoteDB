@@ -4,8 +4,8 @@ services:
     quotedb:
         build: .
         volumes:
-            - ./data:/go/src/github.com/n7st/quoteDB/data
-        working_dir: /go/src/github.com/n7st/quoteDB
+            - ./data:/opt/quotedb/data
         ports:
             - 3000:8080
-        command: go run cmd/quoteDB/main.go /go/src/github.com/n7st/quoteDB/data/config.yaml
+        working_dir: /opt/quotedb
+        command: /bin/quotedb /opt/quotedb/data/config.yaml
