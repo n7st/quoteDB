@@ -14,7 +14,7 @@ RUN go get ./... && \
     apk del --purge git gcc musl-dev && \
     rm -rf /go/bin /go/pkg /var/cache/apk/*
 
-FROM golang:1.10.0-alpine3.7
+FROM alpine:3.7
 
 COPY --from=builder /bin/quotedb /bin/quotedb
 
