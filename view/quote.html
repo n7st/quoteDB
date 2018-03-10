@@ -28,7 +28,12 @@
                 </thead>
                 <tbody>
                     {{range $key, $value := .Lines}}
-                        <tr {{if $value.Deleted}}style="color: #ccc"{{end}}>
+                        <tr
+                            {{if $value.Deleted}}
+                                style="color: #ccc; display: none"
+                                class="deleted"
+                            {{end}}
+                        >
                             <td>{{$value.Author}}</td>
                             <td>{{$value.Content}}</td>
                             <td style="text-align: center"><!-- TODO -->
@@ -42,7 +47,19 @@
                     {{end}}
                 </tbody>
                 <tfoot>
-                        <td colspan="2">&nbsp;</td>
+                    <tr>
+                        <td>
+                            <label for="show_deleted">
+                                <input
+                                    type="checkbox"
+                                    name="show_deleted"
+                                    id="show_deleted"
+                                >
+
+                                Show deleted lines
+                            </label>
+                        </td>
+                        <td>&nbsp;</td>
                         <td>
                             <button
                                 type="submit"
@@ -60,3 +77,17 @@
 
     {{template "footer"}}
 {{end}}
+
+{{define "javascript"}}
+<script type="text/javascript">
+    (function() {
+        $('#show_deleted').on('change', function() {
+            if ($(this).is(':checked'))
+                $('.deleted').show();
+            else
+                $('.deleted').hide();
+        });
+    })();
+</script>
+{{end}}
+

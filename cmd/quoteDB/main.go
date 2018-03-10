@@ -26,9 +26,9 @@ func main() {
 		config = util.NewConfig()
 	}
 
-        if config.Server == "" {
+	if config.Server == "" {
 		log.Fatal("Invalid configuration provided")
-        }
+	}
 
 	bot := util.InitIRC(config)
 	db := util.InitDB(config)

@@ -51,16 +51,18 @@ func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// CleanupFormHandler() allows lines of a quote to be marked as deleted from the
+// web UI
 func (h *Handler) CleanupFormHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)
+
+		fmt.Fprintf(w, "An internal server error occurred: %s", err)
 	}
 
 	toDelete := r.PostForm["delete[]"]
-
-	fmt.Println(toDelete)
 
 	for _, idx := range toDelete {
 		var line model.Line
@@ -76,5 +78,5 @@ func (h *Handler) CleanupFormHandler(w http.ResponseWriter, r *http.Request) {
 		h.DB.Save(&line)
 	}
 
-	http.Redirect(w, r, "/view/" + vars["id"], 301)
+	http.Redirect(w, r, "/view/"+vars["id"], 301)
 }
