@@ -50,3 +50,31 @@ func (h *Handler) ViewHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "An internal server error occurred: %s", err)
 	}
 }
+
+func (h *Handler) CleanupFormHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+
+	if err := r.ParseForm(); err != nil {
+		log.Println(err)
+	}
+
+	toDelete := r.PostForm["delete[]"]
+
+	fmt.Println(toDelete)
+
+	for _, idx := range toDelete {
+		var line model.Line
+
+		h.DB.Find(&line, idx)
+
+		if line.Deleted {
+			line.Deleted = false
+		} else {
+			line.Deleted = true
+		}
+
+		h.DB.Save(&line)
+	}
+
+	http.Redirect(w, r, "/view/" + vars["id"], 301)
+}

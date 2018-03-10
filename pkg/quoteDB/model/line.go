@@ -10,6 +10,7 @@ type Line struct {
 
 	Content string
 	Author  string
+	Deleted bool
 
 	Head   Head
 	HeadID uint

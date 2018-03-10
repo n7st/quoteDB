@@ -32,5 +32,7 @@ func (h *Handler) Router() *mux.Router {
 	r.HandleFunc("/view/{id}", h.ViewHandler)
 	r.HandleFunc("/channel/{name}", h.ChannelIndexHandler)
 
+	r.HandleFunc("/quote/edit/{id}", h.CleanupFormHandler)
+
 	return r
 }

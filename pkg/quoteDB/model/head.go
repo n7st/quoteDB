@@ -8,7 +8,8 @@ import "github.com/jinzhu/gorm"
 type Head struct {
 	gorm.Model
 
-	Title string
+	Title   string
+	Deleted bool
 
 	Channel   Channel
 	ChannelID uint
