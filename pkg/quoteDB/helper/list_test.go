@@ -33,19 +33,33 @@ var input = []map[string]string{
 		"timestamp": time.Now().String(),
 		"message":   "Last Message",
 	},
+	{
+		"nick":      "User 1",
+		"timestamp": time.Now().String(),
+		"message":   "Test first",
+	},
+	{
+		"nick":      "User 2",
+		"timestamp": time.Now().String(),
+		"message":   "Test second",
+	},
+	{
+		"nick":      "User 1",
+		"timestamp": time.Now().String(),
+		"message":   "Final test",
+	},
 }
 
 // TestLinesFromHistory() runs the LinesFromHistory() helper with the example
 // input and ensures its output is as expected
 func TestLinesFromHistory(t *testing.T) {
-	options := []string{"Foo", "baz"} // lower case should work too
-
 	t.Run("History check", func(t *testing.T) {
+		options := []string{"Foo", "baz"} // lower case should work too
 		lines := LinesFromHistory(input, options)
 
 		// input[1..3] have been requested from history
 		if len(lines) != 3 {
-			fmt.Println("Incorrect number of lines returned from search")
+			fmt.Printf("Incorrect number of lines (%d) returned from search\n", len(lines))
 			t.Fail()
 		}
 
@@ -64,6 +78,21 @@ func TestLinesFromHistory(t *testing.T) {
 			t.Fail()
 		}
 	})
+
+	t.Run("Check the message was the last instance", func(t *testing.T) {
+		options := []string{"Test", "Final"}
+		lines := LinesFromHistory(input, options)
+
+		if len(lines) != 2 {
+			fmt.Printf("Expected 2 lines, got %d\n", len(lines))
+			t.Fail()
+		}
+
+		if lines[0]["message"] != "Test second" || lines[1]["message"] != "Final test" {
+			fmt.Println("Output is not correct")
+			t.Fail()
+		}
+	})
 }
 
 // TestLastNLinesFromHistory() runs two tests to check the history returned is
@@ -78,13 +107,13 @@ func TestLastNLinesFromHistory(t *testing.T) {
 			t.Fail()
 		}
 
-		if lines[0]["message"] != "Baz Test" {
+		if lines[0]["message"] != "Test second" {
 			fmt.Printf("The first message is incorrect (%s)\n",
 				lines[0]["message"])
 			t.Fail()
 		}
 
-		if lines[1]["message"] != "Last Message" {
+		if lines[1]["message"] != "Final test" {
 			fmt.Printf("The last message is incorrect (%s)\n",
 				lines[1]["message"])
 			t.Fail()
@@ -104,10 +133,10 @@ func TestLastNLinesFromHistory(t *testing.T) {
 	// The number passed to LastNLinesFromHistory() is larger than the length
 	// of the input. Check the array hasn't overflowed.
 	t.Run("Check for overflow", func(t *testing.T) {
-		lines := LastNLinesFromHistory(input, 7)
+		lines := LastNLinesFromHistory(input, 10)
 
 		if len(lines) != len(input) {
-			fmt.Println("Expected five lines")
+			fmt.Println("Expected eight lines")
 			t.Fail()
 		}
 	})

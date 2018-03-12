@@ -6,26 +6,30 @@ import "strings"
 // LinesFromHistory() searches a history list for a start and end point and
 // grabs all the lines in between.
 func LinesFromHistory(input []map[string]string, options []string) (output []map[string]string) {
+	firstIdx := strings.ToLower(options[0])
+	secondIdx := strings.ToLower(options[1])
 	matched := false
 
-	for _, line := range input {
-		message := strings.ToLower(line["message"])
-		firstIdx := strings.ToLower(options[0])
-		secondIdx := strings.ToLower(options[1])
+	for i := len(input) - 1; i >= 0; i-- {
+		message := strings.ToLower(input[i]["message"])
 
-		if strings.HasPrefix(message, firstIdx) {
+		if strings.HasPrefix(message, secondIdx) {
 			matched = true
 		}
 
-		// Keep appending lines until we don't match anymore
 		if matched {
-			output = append(output, line)
+			output = append(output, input[i])
 		}
 
-		if strings.HasPrefix(message, secondIdx) {
-			matched = false
+		if strings.HasPrefix(message, firstIdx) {
 			break
 		}
+	}
+
+	for i := len(output)/2 - 1; i >= 0; i-- {
+		opp := len(output) - 1 - i
+
+		output[i], output[opp] = output[opp], output[i]
 	}
 
 	return
