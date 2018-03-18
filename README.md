@@ -1,6 +1,7 @@
 # quoteDB
 
 [![Build Status](https://travis-ci.org/n7st/quoteDB.svg?branch=master)](https://travis-ci.org/n7st/quoteDB)
+[![GitHub release](https://img.shields.io/github/release/n7st/quoteDB.svg)](https://github.com/n7st/quoteDB)
 
 IRC quotemaker with a web frontend for viewing saved quotes.
 
