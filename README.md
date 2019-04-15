@@ -1,5 +1,7 @@
 # quoteDB
 
+[![Build Status](https://drone.netsplit.uk/api/badges/mike/quoteDB/status.svg)](https://drone.netsplit.uk/mike/quoteDB)
+
 IRC quotemaker with a web frontend for viewing saved quotes.
 
 ## Installation
