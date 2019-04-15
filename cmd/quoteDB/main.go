@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/n7st/quoteDB/pkg/quoteDB"
-	"github.com/n7st/quoteDB/pkg/quoteDB/event"
-	"github.com/n7st/quoteDB/pkg/quoteDB/handler"
-	"github.com/n7st/quoteDB/pkg/quoteDB/util"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB/event"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB/handler"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB/util"
 
 	"github.com/gorilla/handlers"
 )
@@ -26,9 +26,9 @@ func main() {
 		config = util.NewConfig()
 	}
 
-        if config.Server == "" {
+	if config.Server == "" {
 		log.Fatal("Invalid configuration provided")
-        }
+	}
 
 	bot := util.InitIRC(config)
 	db := util.InitDB(config)
@@ -46,7 +46,11 @@ func main() {
 	event.Initialise(quoteBot)
 
 	// Run the web server
-	srv.ListenAndServe()
+	err := srv.ListenAndServe()
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
 	// Run the IRC bot
 	quoteBot.IRC.Loop()

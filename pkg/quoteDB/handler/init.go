@@ -4,7 +4,7 @@ package handler
 import (
 	"html/template"
 
-	"github.com/n7st/quoteDB/pkg/quoteDB/util"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB/util"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"

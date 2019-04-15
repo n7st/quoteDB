@@ -1,8 +1,5 @@
 # quoteDB
 
-[![Build Status](https://travis-ci.org/n7st/quoteDB.svg?branch=master)](https://travis-ci.org/n7st/quoteDB)
-[![GitHub release](https://img.shields.io/github/release/n7st/quoteDB.svg)](https://github.com/n7st/quoteDB)
-
 IRC quotemaker with a web frontend for viewing saved quotes.
 
 ## Installation
@@ -20,7 +17,7 @@ the host machine).
 ### Manually
 
 * Install the software `go get github.com/n7st/quoteDB/...`
-* `cd` to the directory where it's installed (probably `~/go/src/github.com/n7st/quoteDB`
+* `cd` to the directory where it's installed (probably `~/go/src/git.netsplit.uk/mike/quoteDB`
 * Copy `data/config_example.yaml` to `~/.config/netsplit/quoteDB/config.yaml` and edit it
 * Run `quoteDB`
 
@@ -40,7 +37,7 @@ and ending at a line beginning "first part of last message".
 
 ## Limitations
 
-* See the [project's issues](https://github.com/n7st/quoteDB/issues).
+* See the [project's issues](https://git.netsplit.uk/mike/quoteDB/issues).
 * Messages starting with quotation marks currently cannot be used as a start or
 end point.
 
@@ -49,7 +46,7 @@ end point.
 ```
 MIT License
 
-Copyright (c) 2017-2018 Mike Jones
+Copyright (c) 2017-2019 Mike Jones
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

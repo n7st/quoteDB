@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/n7st/quoteDB/pkg/quoteDB/model"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB/model"
 
 	"github.com/gorilla/mux"
 )
