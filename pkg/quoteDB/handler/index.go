@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/n7st/quoteDB/pkg/quoteDB/model"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB/model"
 )
 
 type IndexContent struct {

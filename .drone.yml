@@ -1,0 +1,19 @@
+---
+kind: pipeline
+name: default
+
+workspace:
+  base: /go
+  path: src/git.netsplit.uk/mike/quoteDB
+
+steps:
+  - name:  test
+    image: golang:1.12.0-alpine3.9
+    commands:
+      - apk update && apk upgrade && apk add --no-cache bash git openssh
+      - export GO111MODULE=on
+      - export CGO_ENABLED=0
+      - go build -o quty cmd/quoteDB/main.go
+      - go test ./...
+
+...

@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/n7st/quoteDB/pkg/quoteDB/helper"
-	"github.com/n7st/quoteDB/pkg/quoteDB/model"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB/helper"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB/model"
 
 	"github.com/thoj/go-ircevent"
 )

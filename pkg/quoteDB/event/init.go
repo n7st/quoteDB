@@ -2,7 +2,7 @@
 package event
 
 import (
-	"github.com/n7st/quoteDB/pkg/quoteDB"
+	"git.netsplit.uk/mike/quoteDB/pkg/quoteDB"
 
 	"github.com/thoj/go-ircevent"
 )
